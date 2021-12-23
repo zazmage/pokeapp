@@ -11,7 +11,7 @@ const MainPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (pokemons.length == 0) dispatch(getPokemons());
+    if (pokemons.length === 0) dispatch(getPokemons());
   }, [pokemons, dispatch]);
 
   return (

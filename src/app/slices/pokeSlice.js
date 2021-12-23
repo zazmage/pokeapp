@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { collection, addDoc, getDocs } from "firebase/firestore";
-import { db } from "../../firebase/firebaseConfig";
 
 export const pokeSlice = createSlice({
   name: "pokeDesk",
@@ -25,7 +23,8 @@ export const getPokemons = () => async (dispatch) => {
       "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=25"
     );
     res = await res.json();
-    res.results.map(async (el) => {
+    const size = res.length;
+    res.results.map(async (el, size) => {
       let pokemon = { name: el.name };
       let res2 = await fetch(el.url);
       res2 = await res2.json();
@@ -45,7 +44,7 @@ export const getPokemons = () => async (dispatch) => {
         ? res4.chain.evolves_to[0].species.name
         : null;
       pokeData.push(pokemon);
-      pokeData.length === 25 && dispatch(setPokemons(pokeData));
+      pokeData.length === size && dispatch(setPokemons(pokeData));
     });
   } catch (error) {
     console.log(error);
